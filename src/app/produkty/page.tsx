@@ -12,7 +12,7 @@ export const revalidate = 60;
 
 async function getProducts(): Promise<Product[]> {
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { data: products, error } = await supabase
     .from('products')
     .select('*')
     .eq('is_active', true)
@@ -22,7 +22,29 @@ async function getProducts(): Promise<Product[]> {
     console.error('Error fetching products:', error);
     return [];
   }
-  return data || [];
+
+  // Fetch review stats for all products
+  const { data: reviews } = await supabase
+    .from('reviews')
+    .select('product_id, rating')
+    .eq('is_approved', true);
+
+  const reviewStats = new Map<string, { sum: number; count: number }>();
+  (reviews || []).forEach((r) => {
+    const existing = reviewStats.get(r.product_id) || { sum: 0, count: 0 };
+    existing.sum += r.rating;
+    existing.count += 1;
+    reviewStats.set(r.product_id, existing);
+  });
+
+  return (products || []).map((p) => {
+    const stats = reviewStats.get(p.id);
+    return {
+      ...p,
+      avg_rating: stats ? stats.sum / stats.count : undefined,
+      review_count: stats?.count || 0,
+    };
+  });
 }
 
 export default async function ProduktyPage() {

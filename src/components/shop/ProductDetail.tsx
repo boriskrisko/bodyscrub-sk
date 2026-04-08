@@ -7,6 +7,7 @@ import { Product, Review } from '@/types';
 import { useCartStore } from '@/hooks/useCart';
 import { formatPrice } from '@/lib/utils';
 import StarRating from '@/components/ui/StarRating';
+import ReviewForm from './ReviewForm';
 
 const categoryColors: Record<string, string> = {
   coffee: '#8B7355',
@@ -172,7 +173,7 @@ export default function ProductDetail({
           Recenzie {reviews.length > 0 && <span className="text-sand-400">({reviews.length})</span>}
         </h2>
         {reviews.length === 0 ? (
-          <p className="text-sand-600 text-sm">Zatiaľ žiadne recenzie.</p>
+          <p className="text-sand-600 text-sm mb-6">Zatiaľ žiadne recenzie. Buďte prvý!</p>
         ) : (
           <div className="space-y-4">
             {reviews.map((review) => (
@@ -193,6 +194,10 @@ export default function ProductDetail({
             ))}
           </div>
         )}
+
+        <div className="mt-8">
+          <ReviewForm productId={product.id} />
+        </div>
       </div>
     </div>
   );
