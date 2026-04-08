@@ -5,6 +5,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/shop/CartDrawer';
 import Analytics from '@/components/marketing/Analytics';
+import CookieConsent from '@/components/ui/CookieConsent';
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/constants';
 
 const outfit = Outfit({
@@ -46,6 +47,7 @@ export default function RootLayout({
         <CartDrawer />
         <main>{children}</main>
         <Footer />
+        <CookieConsent />
         <Analytics />
       </body>
     </html>
