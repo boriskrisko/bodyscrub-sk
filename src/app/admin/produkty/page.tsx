@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import { Product } from '@/types';
-import AdminProductList from '@/components/admin/AdminProductList';
+import AdminProducts from '@/components/admin/AdminProducts';
 
 export default async function AdminProduktyPage() {
   const supabase = createClient();
@@ -9,10 +9,5 @@ export default async function AdminProduktyPage() {
     .select('*')
     .order('created_at', { ascending: false });
 
-  return (
-    <div>
-      <h1 className="font-display text-2xl font-medium mb-6">Produkty</h1>
-      <AdminProductList products={(data || []) as Product[]} />
-    </div>
-  );
+  return <AdminProducts initialProducts={(data || []) as Product[]} />;
 }

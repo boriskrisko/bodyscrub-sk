@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Product } from '@/types';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import { useToast } from './AdminUI';
 
 export default function AdminProductForm({
   product,
@@ -15,6 +16,7 @@ export default function AdminProductForm({
   const isEdit = !!product;
   const supabase = createClient();
   const router = useRouter();
+  const { toast } = useToast();
 
   const [form, setForm] = useState({
     name: product?.name || '',
@@ -112,6 +114,7 @@ export default function AdminProductForm({
     }
 
     setSaving(false);
+    toast(isEdit ? 'Produkt uložený' : 'Produkt vytvorený');
     router.refresh();
     onClose();
   };
