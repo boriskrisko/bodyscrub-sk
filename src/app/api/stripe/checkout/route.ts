@@ -93,6 +93,7 @@ export async function POST(req: NextRequest) {
       detail: message,
       type: stripeError,
       key_prefix: process.env.STRIPE_SECRET_KEY?.substring(0, 12) || 'missing',
+      site_url: SITE_URL,
     }, { status: 500 });
   }
 }
