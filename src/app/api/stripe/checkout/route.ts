@@ -84,8 +84,9 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error('Stripe checkout error:', error);
-    return NextResponse.json({ error: 'Chyba pri vytváraní platby' }, { status: 500 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Stripe checkout error:', message);
+    return NextResponse.json({ error: 'Chyba pri vytváraní platby', detail: message }, { status: 500 });
   }
 }
