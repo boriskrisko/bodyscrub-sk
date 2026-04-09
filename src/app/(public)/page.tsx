@@ -29,7 +29,7 @@ export default async function HomePage() {
     .eq('is_active', true)
     .eq('is_featured', true)
     .order('created_at', { ascending: false })
-    .limit(6);
+    .limit(3);
 
   // If fewer than 3 featured, get all active
   let displayProducts = (products || []) as Product[];
@@ -39,7 +39,7 @@ export default async function HomePage() {
       .select('*')
       .eq('is_active', true)
       .order('created_at', { ascending: false })
-      .limit(6);
+      .limit(3);
     displayProducts = (allProducts || []) as Product[];
   }
 
