@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import LogoutButton from '@/components/auth/LogoutButton';
 
 export const metadata: Metadata = {
   title: 'Môj účet',
@@ -55,6 +56,10 @@ export default async function UcetPage() {
             Pokračovať v nákupe
           </div>
         </Link>
+      </div>
+
+      <div className="mt-8">
+        <LogoutButton />
       </div>
     </div>
   );
