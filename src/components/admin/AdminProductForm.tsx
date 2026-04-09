@@ -216,8 +216,9 @@ export default function AdminProductForm({
         <div>
           <label className="block text-sm text-sand-600 mb-2">Obrázky</label>
           <div className="flex gap-3 flex-wrap mb-3">
-            {images.map((img, i) => (
+            {images.filter(img => img.url).map((img, i) => (
               <div key={i} className="relative w-20 h-20 rounded-lg border border-sand-200 overflow-hidden group">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={img.url} alt={img.alt} className="w-full h-full object-cover" />
                 <button
                   type="button"

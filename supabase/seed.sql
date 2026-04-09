@@ -11,7 +11,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['bestseller', 'vegan', 'handmade'],
   200,
   'Coffea Arabica (Coffee) Seed Powder, Cocos Nucifera (Coconut) Oil, Saccharum Officinarum (Sugar), Prunus Amygdalus Dulcis (Sweet Almond) Oil, Tocopherol (Vitamin E), Coffea Arabica Seed Extract',
-  '[{"url": "", "alt": "Coffee scrub", "position": 0}]',
+  '[]',
   50,
   true,
   true
@@ -27,7 +27,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['novinka', 'organic', 'handmade'],
   150,
   'Maris Sal (Sea Salt), Prunus Amygdalus Dulcis (Sweet Almond) Oil, Lavandula Angustifolia (Lavender) Oil, Simmondsia Chinensis (Jojoba) Seed Oil, Tocopherol (Vitamin E), Lavandula Angustifolia Flower Extract',
-  '[{"url": "", "alt": "Lavender oil scrub", "position": 0}]',
+  '[]',
   35,
   true,
   true
@@ -43,7 +43,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['organic', 'vegan'],
   180,
   'Camellia Sinensis (Matcha Green Tea) Leaf Powder, Saccharum Officinarum (Sugar), Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea Butter), Tocopherol (Vitamin E), Aloe Barbadensis Leaf Juice',
-  '[{"url": "", "alt": "Matcha detox", "position": 0}]',
+  '[]',
   25,
   true,
   true
@@ -59,7 +59,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['vegan', 'organic'],
   220,
   'Himalayan Pink Salt, Cocos Nucifera (Coconut) Oil, Rosa Canina (Rosehip) Seed Oil, Citrus Sinensis (Sweet Orange) Peel Oil, Tocopherol (Vitamin E)',
-  '[{"url": "", "alt": "Himalayan salt scrub", "position": 0}]',
+  '[]',
   40,
   true,
   false
@@ -75,7 +75,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['handmade', 'vegan'],
   200,
   'Saccharum Officinarum (Sugar), Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea Butter), Vanilla Planifolia Fruit Extract, Prunus Amygdalus Dulcis (Sweet Almond) Oil, Tocopherol (Vitamin E)',
-  '[{"url": "", "alt": "Coconut & vanilla", "position": 0}]',
+  '[]',
   30,
   true,
   false
@@ -91,7 +91,7 @@ INSERT INTO products (name, slug, description, short_description, price, compare
   ARRAY['novinka', 'vegan', 'handmade'],
   180,
   'Activated Charcoal (Bamboo), Saccharum Officinarum (Sugar), Cocos Nucifera (Coconut) Oil, Melaleuca Alternifolia (Tea Tree) Leaf Oil, Kaolin Clay, Tocopherol (Vitamin E)',
-  '[{"url": "", "alt": "Charcoal deep clean", "position": 0}]',
+  '[]',
   20,
   true,
   true

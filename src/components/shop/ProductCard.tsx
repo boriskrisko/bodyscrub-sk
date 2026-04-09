@@ -19,7 +19,7 @@ const categoryColors: Record<string, string> = {
 export default function ProductCard({ product }: { product: Product }) {
   const addItem = useCartStore((s) => s.addItem);
   const color = categoryColors[product.category] || '#4A6741';
-  const firstImage = product.images?.[0]?.url;
+  const firstImage = product.images?.[0]?.url || null;
 
   return (
     <div className="bg-white rounded-lg overflow-hidden border border-sand-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] group">
