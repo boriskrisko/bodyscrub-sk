@@ -27,11 +27,6 @@ export default function DakujemePage({
         <p className="text-sm text-sand-400 mb-8">
           Potvrdenie sme odoslali na váš email.
         </p>
-        {searchParams.session_id && (
-          <p className="text-xs text-sand-400 mb-6 break-all">
-            ID: {searchParams.session_id}
-          </p>
-        )}
         <div className="flex gap-3 justify-center flex-wrap">
           <Link href="/produkty" className="btn-primary">
             Pokračovať v nákupe
