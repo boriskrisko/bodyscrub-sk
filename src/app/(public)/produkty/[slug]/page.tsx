@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 import { SITE_URL } from '@/lib/constants';
 import ProductDetail from '@/components/shop/ProductDetail';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function getProduct(slug: string): Promise<Product | null> {
   const supabase = createClient();
@@ -48,13 +48,6 @@ export async function generateMetadata({
       type: 'website',
     },
   };
-}
-
-export const dynamicParams = true;
-
-export async function generateStaticParams() {
-  // At build time, return empty — pages will be generated on-demand via ISR
-  return [];
 }
 
 export default async function ProductPage({

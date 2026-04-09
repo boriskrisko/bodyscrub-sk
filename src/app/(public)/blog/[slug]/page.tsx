@@ -7,7 +7,7 @@ import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function getPost(slug: string): Promise<BlogPost | null> {
   const supabase = createClient();
@@ -36,10 +36,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       images: post.cover_image ? [post.cover_image] : [],
     },
   };
-}
-
-export async function generateStaticParams() {
-  return [];
 }
 
 export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
