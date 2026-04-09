@@ -6,11 +6,7 @@ export const metadata: Metadata = {
   title: 'Ďakujeme za objednávku',
 };
 
-export default function DakujemePage({
-  searchParams,
-}: {
-  searchParams: { session_id?: string };
-}) {
+export default function DakujemePage() {
   return (
     <div className="pt-24 pb-20 px-6 md:px-10 max-w-[600px] mx-auto min-h-screen text-center">
       <ClearCart />
