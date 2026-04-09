@@ -1,14 +1,12 @@
 import Link from 'next/link';
 import ScrubCircle from '@/components/marketing/ScrubCircle';
 import StarRating from '@/components/ui/StarRating';
-import HomeProducts from '@/components/marketing/HomeProducts';
 import NewsletterForm from '@/components/marketing/NewsletterForm';
+import ProductCard from '@/components/shop/ProductCard';
+import { createClient } from '@/lib/supabase/server';
+import { Product, Review } from '@/types';
 
-const reviews = [
-  { name: 'Katarína M.', text: 'Kávový scrub je úžasný! Pleť je hladká a vonia ako čerstvé espresso.', rating: 5 },
-  { name: 'Tomáš R.', text: 'Konečne niečo prírodné čo naozaj funguje. Matcha detox je môj favorit.', rating: 5 },
-  { name: 'Zuzana K.', text: 'Levanduľový scrub pred spaním = najlepší večerný rituál.', rating: 5 },
-];
+export const revalidate = 60;
 
 const steps = [
   { step: '01', title: 'Navlhči pokožku', desc: 'Teplou vodou priprav pokožku na peeling' },
@@ -16,7 +14,46 @@ const steps = [
   { step: '03', title: 'Opláchni a pocíť rozdiel', desc: 'Hladká, hydratovaná a voňavá pokožka' },
 ];
 
-export default function HomePage() {
+const fallbackReviews = [
+  { name: 'Katarína M.', text: 'Kávový scrub je úžasný! Pleť je hladká a vonia ako čerstvé espresso.', rating: 5 },
+  { name: 'Tomáš R.', text: 'Konečne niečo prírodné čo naozaj funguje. Matcha detox je môj favorit.', rating: 5 },
+  { name: 'Zuzana K.', text: 'Levanduľový scrub pred spaním = najlepší večerný rituál.', rating: 5 },
+];
+
+export default async function HomePage() {
+  const supabase = createClient();
+
+  const { data: products } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_active', true)
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false })
+    .limit(6);
+
+  // If fewer than 3 featured, get all active
+  let displayProducts = (products || []) as Product[];
+  if (displayProducts.length < 3) {
+    const { data: allProducts } = await supabase
+      .from('products')
+      .select('*')
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(6);
+    displayProducts = (allProducts || []) as Product[];
+  }
+
+  const { data: dbReviews } = await supabase
+    .from('reviews')
+    .select('*')
+    .eq('is_approved', true)
+    .order('created_at', { ascending: false })
+    .limit(3);
+
+  const reviews = (dbReviews && dbReviews.length > 0)
+    ? (dbReviews as Review[]).map((r) => ({ name: r.name, text: r.text || '', rating: r.rating }))
+    : fallbackReviews;
+
   return (
     <>
       {/* Hero */}
@@ -83,7 +120,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* Products */}
+      {/* Products — from DB */}
       <section id="products" className="py-20 px-6 md:px-10 max-w-[1100px] mx-auto">
         <div className="text-center mb-12">
           <span className="tag bg-sand-100 text-sand-600 mb-3 inline-block">PRODUKTY</span>
@@ -91,7 +128,16 @@ export default function HomePage() {
             Vyber si svoj <span className="font-semibold text-moss-600">scrub</span>
           </h2>
         </div>
-        <HomeProducts />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {displayProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+        <div className="text-center mt-10">
+          <Link href="/produkty" className="btn-outline">
+            Zobraziť všetky produkty →
+          </Link>
+        </div>
       </section>
 
       {/* How it works */}
@@ -113,7 +159,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Reviews */}
+      {/* Reviews — from DB */}
       <section className="py-20 px-6 md:px-10 max-w-[1100px] mx-auto">
         <div className="text-center mb-12">
           <span className="tag bg-sand-100 text-sand-600 inline-block">RECENZIE</span>
