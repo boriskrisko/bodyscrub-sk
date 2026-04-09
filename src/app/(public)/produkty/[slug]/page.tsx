@@ -62,10 +62,21 @@ export default async function ProductPage({
 }: {
   params: { slug: string };
 }) {
-  const product = await getProduct(params.slug);
+  let product: Product | null = null;
+  let reviews: Review[] = [];
+
+  try {
+    product = await getProduct(params.slug);
+  } catch (e) {
+    console.error('getProduct error:', e);
+  }
   if (!product) notFound();
 
-  const reviews = await getReviews(product.id);
+  try {
+    reviews = await getReviews(product.id);
+  } catch (e) {
+    console.error('getReviews error:', e);
+  }
   const avgRating = reviews.length > 0
     ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
     : 0;
