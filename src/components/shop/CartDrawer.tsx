@@ -4,6 +4,7 @@ import { useCartStore } from '@/hooks/useCart';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants';
 import { formatPrice } from '@/lib/utils';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } = useCartStore();
@@ -31,9 +32,14 @@ export default function CartDrawer() {
         ) : (
           <div className="flex-1 overflow-y-auto">
             {items.map((item) => (
-              <div key={item.id} className="flex justify-between items-center py-3 border-b border-sand-200">
-                <div className="flex-1">
-                  <div className="text-sm font-medium">{item.name}</div>
+              <div key={item.id} className="flex items-center gap-3 py-3 border-b border-sand-200">
+                {item.image && (
+                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-sand-100 shrink-0 relative">
+                    <Image src={item.image} alt={item.name} fill className="object-cover" sizes="48px" />
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium truncate">{item.name}</div>
                   <div className="text-xs text-sand-600 mt-0.5">
                     {formatPrice(item.price)}
                   </div>
