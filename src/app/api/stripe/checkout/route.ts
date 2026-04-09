@@ -84,16 +84,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    const stack = error instanceof Error ? error.stack : '';
-    const stripeError = (error as { type?: string; code?: string }).type || '';
-    console.error('Stripe checkout error:', message, stripeError, stack);
-    return NextResponse.json({
-      error: 'Chyba pri vytváraní platby',
-      detail: message,
-      type: stripeError,
-      key_prefix: process.env.STRIPE_SECRET_KEY?.substring(0, 12) || 'missing',
-      site_url: SITE_URL,
-    }, { status: 500 });
+    console.error('Stripe checkout error:', error instanceof Error ? error.message : error);
+    return NextResponse.json({ error: 'Chyba pri vytváraní platby' }, { status: 500 });
   }
 }
