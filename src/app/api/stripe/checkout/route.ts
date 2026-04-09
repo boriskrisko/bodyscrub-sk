@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      payment_method_types: ['card'],
       line_items,
       ...(discounts && { discounts }),
       customer_email: email,
@@ -86,7 +85,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: session.url });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Stripe checkout error:', message);
-    return NextResponse.json({ error: 'Chyba pri vytváraní platby', detail: message }, { status: 500 });
+    const stack = error instanceof Error ? error.stack : '';
+    const stripeError = (error as { type?: string; code?: string }).type || '';
+    console.error('Stripe checkout error:', message, stripeError, stack);
+    return NextResponse.json({
+      error: 'Chyba pri vytváraní platby',
+      detail: message,
+      type: stripeError,
+      key_prefix: process.env.STRIPE_SECRET_KEY?.substring(0, 12) || 'missing',
+    }, { status: 500 });
   }
 }
