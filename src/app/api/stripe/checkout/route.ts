@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
           currency: 'eur',
           product_data: {
             name: item.name,
-            ...(item.image && { images: [item.image] }),
+            ...(item.image && item.image.startsWith('http') && { images: [item.image] }),
           },
           unit_amount: Math.round(item.price * 100),
         },
@@ -43,23 +43,25 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Apply discount as negative line item
+    const stripe = getStripe();
+
+    // Create a Stripe coupon on-the-fly for the discount
+    let discounts: { coupon: string }[] | undefined;
     if (discount_amount && discount_amount > 0) {
-      line_items.push({
-        price_data: {
-          currency: 'eur',
-          product_data: { name: `Zľava (${coupon_code || 'kupón'})` },
-          unit_amount: -Math.round(discount_amount * 100),
-        },
-        quantity: 1,
+      const stripeCoupon = await stripe.coupons.create({
+        amount_off: Math.round(discount_amount * 100),
+        currency: 'eur',
+        duration: 'once',
+        name: coupon_code ? `Zľava ${coupon_code}` : 'Zľava',
       });
+      discounts = [{ coupon: stripeCoupon.id }];
     }
 
-    const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       line_items,
+      ...(discounts && { discounts }),
       customer_email: email,
       metadata: {
         items: JSON.stringify(
